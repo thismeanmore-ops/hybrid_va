@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>🚀 Hybrid VA/DCA · App Store Style</title>
+    <style>
+        /* ========== Light & Dark Mode Variables ========== */
+        :root {
+            --bg-primary: #F2F2F7;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #F9F9FB;
+            --card-bg: #FFFFFF;
+            --text-primary: #1C1C1E;
+            --text-secondary: #8E8E93;
+            --text-tertiary: #3A3A3E;
+            --accent-blue: #007AFF;
+            --accent-purple: #5856D6;
+            --accent-green: #34C759;
+            --accent-red: #FF3B30;
+            --accent-yellow: #FF9F0A;
+            --border-light: rgba(224, 224, 230, 0.8);
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
+            --badge-va: #E5F0FF;
+            --badge-dca: #FFE8E5;
+            --switch-bg: #FFE5CC;
+        }
+
+        body.dark {
+            --bg-primary: #000000;
+            --bg-secondary: #1C1C1E;
+            --bg-tertiary: #2C2C2E;
+            --card-bg: #1C1C1E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --text-tertiary: #98989E;
+            --border-light: rgba(56, 56, 62, 0.8);
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.3);
+            --badge-va: #1A3A5C;
+            --badge-dca: #4A2A1A;
+            --switch-bg: #3A2A1A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-primary);
+            font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, 'Prompt', sans-serif;
+            padding: 20px 16px;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        .appstore-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        .appstore-nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            border-radius: 34px;
+            padding: 12px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            border: 0.5px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .appstore-nav {
+            background: rgba(28, 28, 30, 0.96);
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .app-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .brand-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            width: 52px;
+            height: 28px;
+            background: #E9E9EF;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        body.dark .toggle-switch {
+            background: #007AFF;
+        }
+
+        .toggle-switch::after {
+            content: "☀️";
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 1px;
+            left: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        body.dark .toggle-switch::after {
+            content: "🌙";
+            left: 24px;
+        }
+
+        .reset-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .reset-btn:active { opacity: 0.7; transform: scale(0.96); }
+
+        .dashboard-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: var(--shadow-sm);
+            border: 0.5px solid var(--border-light);
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .settings-card { flex: 1.2; min-width: 280px; }
+        .results-card { flex: 2.5; min-width: 360px; }
+
+        .input-group { margin-bottom: 20px; }
+        .app-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ปรับขนาดช่องกรอกราคาสินทรัพย์ (resizeable) */
+        .price-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .price-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-tertiary);
+            border: 0.5px solid var(--border-light);
+            border-radius: 18px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: 0.2s;
+            outline: none;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 80px;
+        }
+        .price-textarea:focus {
+            background: var(--card-bg);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+        .price-hint {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .price-badge {
+            background: var(--bg-tertiary);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-family: monospace;
+            color: var(--text-primary);
+        }
+        .input-note {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .key-hint {
+            background: var(--bg-tertiary);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        input, textarea:not(.price-textarea) {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-tertiary);
+            border: 0.5px solid var(--border-light);
+            border-radius: 18px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: 0.2s;
+            outline: none;
+            color: var(--text-primary);
+        }
+        input:focus, textarea:not(.price-textarea):focus {
+            background: var(--card-bg);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+
+        .helper-box {
+            background: var(--bg-tertiary);
+            border-radius: 24px;
+            padding: 18px;
+            margin: 20px 0 16px 0;
+            border: 0.5px solid var(--border-light);
+        }
+        .helper-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 14px;
+            color: var(--accent-blue);
+        }
+        .row-flex { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .row-flex .input-group { flex: 1; margin-bottom: 0; }
+
+        .app-btn {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            padding: 14px;
+            border-radius: 44px;
+            font-weight: 600;
+            font-size: 17px;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .app-btn:active { opacity: 0.8; transform: scale(0.98); }
+        .app-btn-secondary { background: linear-gradient(135deg, #FF9F0A, #FF3B30); }
+        .app-btn-outline { background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue); }
+        .btn-group { display: flex; gap: 12px; margin-top: 12px; }
+        .btn-group button { flex: 1; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 680px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            border-radius: 24px;
+            padding: 18px 8px;
+            text-align: center;
+            border: 0.5px solid var(--border-light);
+            transition: 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-number {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            word-break: break-word;
+            color: var(--text-primary);
+        }
+        .stat-number-gradient { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-number-positive { color: var(--accent-green); }
+        .stat-number-negative { color: var(--accent-red); }
+        .stat-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .profit-box {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 60px;
+            font-weight: 620;
+            font-size: 22px;
+        }
+        .profit-green { background: var(--accent-green); color: white; }
+        .profit-red { background: var(--accent-red); color: white; }
+
+        .table-wrapper {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow-x: auto;
+            border: 0.5px solid var(--border-light);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th {
+            background: var(--bg-tertiary);
+            padding: 14px 8px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        td { padding: 12px 6px; text-align: center; border-bottom: 0.5px solid var(--border-light); color: var(--text-primary); }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 590;
+        }
+        .va-badge { background: var(--badge-va); color: var(--accent-blue); }
+        .dca-badge { background: var(--badge-dca); color: #FF9F0A; }
+        .sell-value { color: var(--accent-red); font-weight: 500; }
+        .buy-value { color: var(--accent-green); font-weight: 500; }
+        .skip-badge { background: var(--bg-tertiary); color: var(--text-secondary); padding: 3px 12px; border-radius: 32px; font-size: 12px; }
+        .switch-chip { background: var(--switch-bg); color: var(--accent-yellow); font-size: 11px; padding: 2px 8px; border-radius: 32px; margin-left: 6px; }
+        .profit-positive { color: var(--accent-green); font-weight: 600; }
+        .profit-negative { color: var(--accent-red); font-weight: 600; }
+
+        .info-note {
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 14px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border-left: 4px solid var(--accent-blue);
+        }
+        .file-input-hidden { display: none; }
+
+        @media (max-width: 760px) {
+            body { padding: 12px; }
+            .appstore-nav { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .brand-text h1 { font-size: 18px; }
+            .stat-number { font-size: 20px; }
+            .profit-box { font-size: 18px; padding: 4px 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="appstore-container">
+    <div class="appstore-nav">
+        <div class="brand-area">
+            <div class="app-icon">🚀</div>
+            <div class="brand-text">
+                <h1>Hybrid VA/DCA</h1>
+                <p>Smart Value Averaging · Cash Management</p>
+            </div>
+        </div>
+        <div class="theme-toggle">
+            <button id="resetDefaultBtn" class="reset-btn">⟳ รีเซ็ต</button>
+            <button id="darkModeToggle" class="toggle-switch"></button>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="app-card settings-card">
+            <div class="input-group">
+                <div class="app-label">🏷️ สินทรัพย์</div>
+                <input type="text" id="assetName" value="AAPL">
+            </div>
+            <div class="input-group">
+                <div class="app-label">💰 เงินต้นเริ่มต้น</div>
+                <input type="number" id="initialCash" value="120000" step="5000">
+            </div>
+
+            <div class="helper-box">
+                <div class="helper-title">✨ สร้าง Target แบบเส้นตรง</div>
+                <div class="row-flex">
+                    <div class="input-group"><div class="app-label">เริ่มต้น</div><input type="number" id="autoStart" value="10000"></div>
+                    <div class="input-group"><div class="app-label">เพิ่มทีละ</div><input type="number" id="autoStep" value="10000"></div>
+                    <div class="input-group"><div class="app-label">จำนวนเดือน</div><input type="number" id="autoMonths" value="12"></div>
+                </div>
+                <button id="genLinearBtn" class="app-btn app-btn-outline" style="width:100%;">📈 สร้าง Target</button>
+            </div>
+
+            <div class="input-group">
+                <div class="app-label">📊 Target Value Path</div>
+                <textarea id="targetPath">10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000</textarea>
+            </div>
+            <div class="input-group">
+                <div class="app-label">💵 Normal Investment</div>
+                <input type="number" id="normalInv" value="10000">
+            </div>
+            <div class="input-group">
+                <div class="app-label">📉 ราคาสินทรัพย์รายเดือน</div>
+                <div class="price-input-area">
+                    <textarea id="priceSeries" class="price-textarea" placeholder="102,98,105,112,108,115,122,118,126,132,128,135">102,98,105,112,108,115,122,118,126,132,128,135</textarea>
+                    <div class="input-note">
+                        <span class="key-hint">💡 กด Enter เพื่อเพิ่มข้อมูล</span>
+                        <span class="key-hint">↕️ ลากมุมขวาล่างเพื่อปรับขนาด</span>
+                    </div>
+                    <div class="price-hint" id="priceHint"></div>
+                </div>
+            </div>
+
+            <button id="runSimBtn" class="app-btn">▶ คำนวณ & อัพเดต</button>
+            <div class="btn-group">
+                <button id="saveJsonBtn" class="app-btn app-btn-secondary">💾 Save as</button>
+                <button id="loadJsonBtn" class="app-btn app-btn-outline">📂 Load</button>
+            </div>
+            <input type="file" id="fileLoader" accept=".json" class="file-input-hidden" />
+
+            <div class="info-note">
+                🔄 <strong>Smart Switch</strong><br>
+                &nbsp;• เงินสด ≤ 30% + VA ต้องการลงทุน > 2x<br>
+                &nbsp;• เงินสด ≤ 30% + VA ขาย/Skip<br>
+                ✅ DCA = เงินสด ÷ เดือนที่เหลือ
+            </div>
+        </div>
+
+        <div class="app-card results-card">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number stat-number-gradient" id="finalMode">—</div><div class="stat-label">โหมดสุดท้าย</div></div>
+                <div class="stat-card"><div class="stat-number stat-number-gradient" id="remainingCashSpan">—</div><div class="stat-label">เงินสดคงเหลือ</div></div>
+                <div class="stat-card"><div class="stat-number stat-number-gradient" id="portfolioValueSpan">—</div><div class="stat-label">มูลค่าพอร์ต</div></div>
+                <div class="stat-card"><div class="stat-number stat-number-gradient" id="totalUnitsSpan">—</div><div class="stat-label">หน่วยลงทุน</div></div>
+                <div class="stat-card"><div class="stat-number stat-number-gradient" id="totalValueSpan">—</div><div class="stat-label">รวมทั้งสิ้น</div></div>
+                <div class="stat-card"><div id="profitPercentSpan" class="profit-box profit-green">0.00%</div><div class="stat-label">กำไร/ขาดทุน</div></div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="resultTable">
+                    <thead><tr><th>เดือน</th><th>Target</th><th>ก่อนปรับ</th><th>ราคา</th><th>ซื้อ/ขาย</th><th>โหมด</th><th>หน่วยเปลี่ยน</th><th>เงินสดคงเหลือ</th><th>พอร์ตรวม</th><th>รวมทั้งสิ้น</th><th>% กำไร/ขาดทุน</th></tr></thead>
+                    <tbody id="tableBody"><tr><td colspan="11" style="text-align:center; padding:40px;">✨ กดปุ่มคำนวณ</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+        });
+
+        // DOM elements
+        const assetNameInput = document.getElementById('assetName');
+        const initialCashInput = document.getElementById('initialCash');
+        const targetPathText = document.getElementById('targetPath');
+        const normalInvInput = document.getElementById('normalInv');
+        const priceSeriesTextarea = document.getElementById('priceSeries');
+        const priceHint = document.getElementById('priceHint');
+        const runBtn = document.getElementById('runSimBtn');
+        const resetBtn = document.getElementById('resetDefaultBtn');
+        const genLinear = document.getElementById('genLinearBtn');
+        const autoStart = document.getElementById('autoStart');
+        const autoStep = document.getElementById('autoStep');
+        const autoMonths = document.getElementById('autoMonths');
+        const saveJsonBtn = document.getElementById('saveJsonBtn');
+        const loadJsonBtn = document.getElementById('loadJsonBtn');
+        const fileLoader = document.getElementById('fileLoader');
+        const tableBody = document.getElementById('tableBody');
+        const finalModeSpan = document.getElementById('finalMode');
+        const remainingCashSpan = document.getElementById('remainingCashSpan');
+        const portfolioValueSpan = document.getElementById('portfolioValueSpan');
+        const totalUnitsSpan = document.getElementById('totalUnitsSpan');
+        const totalValueSpan = document.getElementById('totalValueSpan');
+        const profitPercentSpan = document.getElementById('profitPercentSpan');
+
+        // อัพเดท hint ราคาแบบ实时
+        function updatePriceHint() {
+            let raw = priceSeriesTextarea.value.trim();
+            let prices = raw.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
+            if (prices.length > 0) {
+                let html = '';
+                prices.forEach((p, idx) => {
+                    html += `<span class="price-badge">📆 เดือน ${idx+1}: ${p.toFixed(2)}</span>`;
+                });
+                priceHint.innerHTML = html;
+            } else {
+                priceHint.innerHTML = '<span style="color:#FF3B30;">⚠️ กรุณากรอกราคาสินทรัพย์ (คั่นด้วยคอมม่า)</span>';
+            }
+        }
+
+        // กด Enter ในช่องราคาสินทรัพย์ -> เพิ่ม , และขึ้นบรรทัดใหม่ได้ (แต่เราจะให้ Enter เป็นการเพิ่มข้อมูล/ยืนยัน)
+        // ฟังก์ชัน: ถ้ากด Enter ที่ textarea และไม่ใช่ Shift+Enter ให้เพิ่ม , ต่อท้าย (หรือเริ่มบรรทัดใหม่)
+        priceSeriesTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                let cursorPos = priceSeriesTextarea.selectionStart;
+                let text = priceSeriesTextarea.value;
+                // ถ้าตำแหน่งสุดท้ายหรือใกล้ ให้เพิ่มคอมม่า
+                if (text.length === 0 || text.endsWith(',')) {
+                    // ใส่ค่าใหม่
+                    priceSeriesTextarea.value = text + ' ';
+                } else {
+                    // ถ้าไม่ลงท้ายด้วยคอมม่า ให้เพิ่มคอมม่าและเว้นวรรค
+                    let lastChar = text[text.length - 1];
+                    if (lastChar !== ',' && lastChar !== ' ') {
+                        priceSeriesTextarea.value = text + ', ';
+                    } else {
+                        priceSeriesTextarea.value = text + ' ';
+                    }
+                }
+                updatePriceHint();
+                // runSimulation(); // optional
+            }
+        });
+
+        priceSeriesTextarea.addEventListener('input', updatePriceHint);
+
+        function parseTargetPath(raw) {
+            if (!raw.trim()) return [];
+            let str = raw.trim();
+            if (str.includes(',')) return str.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v>0);
+            else return str.split(/\r?\n/).map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v>0);
+        }
+
+        function generateLinear() {
+            let start = parseFloat(autoStart.value)||10000, step = parseFloat(autoStep.value)||10000, months = parseInt(autoMonths.value)||12;
+            let targets = [];
+            for (let i=1;i<=months;i++) targets.push(start + (i-1)*step);
+            targetPathText.value = targets.join(',');
+            runSimulation();
+        }
+
+        function getCurrentConfig() {
+            return {
+                assetName: assetNameInput.value, initialCash: initialCashInput.value, targetPath: targetPathText.value,
+                normalInv: normalInvInput.value, priceSeries: priceSeriesTextarea.value,
+                autoStart: autoStart.value, autoStep: autoStep.value, autoMonths: autoMonths.value, savedAt: new Date().toISOString()
+            };
+        }
+        function loadConfigToUI(cfg) {
+            if(cfg.assetName) assetNameInput.value = cfg.assetName;
+            if(cfg.initialCash) initialCashInput.value = cfg.initialCash;
+            if(cfg.targetPath) targetPathText.value = cfg.targetPath;
+            if(cfg.normalInv) normalInvInput.value = cfg.normalInv;
+            if(cfg.priceSeries) priceSeriesTextarea.value = cfg.priceSeries;
+            if(cfg.autoStart) autoStart.value = cfg.autoStart;
+            if(cfg.autoStep) autoStep.value = cfg.autoStep;
+            if(cfg.autoMonths) autoMonths.value = cfg.autoMonths;
+            updatePriceHint(); runSimulation();
+        }
+        function saveAsJson() {
+            const asset = assetNameInput.value.trim() || "portfolio";
+            const now = new Date();
+            const filename = `${asset}_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}${String(now.getSeconds()).padStart(2,'0')}.json`;
+            const blob = new Blob([JSON.stringify(getCurrentConfig(), null, 2)], {type:'application/json'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+        }
+        function loadFromFile(file) {
+            const reader = new FileReader();
+            reader.onload = e => { try { loadConfigToUI(JSON.parse(e.target.result)); alert("✅ โหลดสำเร็จ"); } catch(err) { alert("ไฟล์ไม่ถูกต้อง"); } };
+            reader.readAsText(file);
+        }
+        fileLoader.addEventListener('change', e => { if(fileLoader.files.length) loadFromFile(fileLoader.files[0]); fileLoader.value=''; });
+        loadJsonBtn.addEventListener('click', () => fileLoader.click());
+        saveJsonBtn.addEventListener('click', saveAsJson);
+
+        function formatNumber(num) { return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+        function runSimulation() {
+            try {
+                let initialCash = parseFloat(initialCashInput.value) || 120000;
+                let normalInv = parseFloat(normalInvInput.value) || 10000;
+                let targets = parseTargetPath(targetPathText.value);
+                let pricesRaw = priceSeriesTextarea.value.trim().split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v) && v>0);
+                let totalMonths = Math.min(targets.length, pricesRaw.length);
+                if(totalMonths===0) { alert("กรุณาใส่ Target และราคาสินทรัพย์"); return; }
+                targets = targets.slice(0,totalMonths);
+                let prices = pricesRaw.slice(0,totalMonths);
+                updatePriceHint();
+
+                let cash = initialCash, units = 0, mode = "VA", switched = false, reason = "";
+                let records = [];
+                for(let t=0; t<totalMonths; t++) {
+                    let target = targets[t], price = prices[t];
+                    let currentValue = units * price;
+                    let rawDiff = target - currentValue;
+
+                    if(!switched && mode==="VA") {
+                        let cashLow = cash <= initialCash * 0.3;
+                        let needOver2x = rawDiff > normalInv*2;
+                        let isSkipSell = rawDiff <= 0;
+                        if((cashLow && needOver2x) || (cashLow && isSkipSell)) {
+                            mode = "DCA"; switched = true;
+                            reason = (cashLow && needOver2x) ? "เงิน≤30% + ต้องการลงทุน>2x" : "เงิน≤30% + ขาย/Skip";
+                        }
+                    }
+                    let investAmount = 0, unitsDelta = 0, newCash = cash, newUnits = units;
+                    if(mode === "VA") {
+                        if(rawDiff > 0) {
+                            let maxBuy = normalInv * 2;
+                            let want = Math.min(rawDiff, maxBuy);
+                            investAmount = Math.min(want, cash);
+                            if(investAmount>0 && price>0) { let buyU = investAmount/price; newUnits = units+buyU; newCash = cash - investAmount; unitsDelta = buyU; }
+                        } else if(rawDiff < 0) {
+                            let needSell = Math.abs(rawDiff);
+                            let equity = units*price;
+                            let sellVal = Math.min(needSell, equity);
+                            if(sellVal>0 && price>0 && units>0) {
+                                let sellU = Math.min(sellVal/price, units);
+                                let realSell = sellU*price;
+                                newUnits = units - sellU; newCash = cash + realSell; unitsDelta = -sellU; investAmount = -realSell;
+                            }
+                        }
+                    } else {
+                        let left = totalMonths - t;
+                        if(left>0 && cash>0) {
+                            let dcaAmt = cash / left;
+                            investAmount = Math.min(dcaAmt, cash);
+                            if(investAmount>0 && price>0) { let buyU = investAmount/price; newUnits = units+buyU; newCash = cash - investAmount; unitsDelta = buyU; }
+                        }
+                    }
+                    let portAfter = newUnits * price;
+                    let totalAfter = newCash + portAfter;
+                    let profitPercent = ((totalAfter - initialCash)/initialCash)*100;
+                    let isSwitchMonth = (switched && t>0 && records.length>0 && records[records.length-1].mode==="VA" && mode==="DCA") || (switched && t===0 && mode==="DCA");
+                    records.push({month:t+1, target, currentValue, price, investAmount, mode, unitsDelta, cashAfter:newCash, portAfter, unitsAfter:newUnits, totalAfter, profitPercent, isSwitchMonth, switchReason: isSwitchMonth?reason:""});
+                    cash = newCash; units = newUnits;
+                }
+                if(records.length) {
+                    let last = records[records.length-1];
+                    finalModeSpan.innerText = last.mode==="VA"?"VA":"DCA";
+                    remainingCashSpan.innerText = formatNumber(last.cashAfter);
+                    portfolioValueSpan.innerText = formatNumber(last.portAfter);
+                    totalUnitsSpan.innerText = last.unitsAfter.toFixed(2);
+                    totalValueSpan.innerText = formatNumber(last.totalAfter);
+                    let isProfit = last.profitPercent >= 0;
+                    profitPercentSpan.className = `profit-box ${isProfit ? 'profit-green' : 'profit-red'}`;
+                    profitPercentSpan.innerHTML = `${isProfit ? '+' : ''}${last.profitPercent.toFixed(2)}%`;
+                    renderTable(records);
+                }
+            } catch(e) { alert("Error: "+e.message); }
+        }
+
+        function renderTable(records) {
+            tableBody.innerHTML = "";
+            for(let r of records) {
+                let row = tableBody.insertRow();
+                row.insertCell(0).innerText = r.month;
+                row.insertCell(1).innerText = r.target.toFixed(2);
+                row.insertCell(2).innerText = r.currentValue.toFixed(2);
+                row.insertCell(3).innerText = r.price.toFixed(2);
+                let invCell = row.insertCell(4);
+                if(r.investAmount===0) invCell.innerHTML = `<span class="skip-badge">Skip</span>`;
+                else if(r.investAmount>0) invCell.innerHTML = `<span class="buy-value">+${r.investAmount.toFixed(2)}</span>`;
+                else invCell.innerHTML = `<span class="sell-value">${r.investAmount.toFixed(2)}</span>`;
+                let modeCell = row.insertCell(5);
+                let modeLabel = r.mode==="VA"?"VA":"DCA";
+                let badgeClass = r.mode==="VA"?"va-badge":"dca-badge";
+                let switchHtml = r.isSwitchMonth ? `<span class="switch-chip">⚡สลับ</span>` : "";
+                modeCell.innerHTML = `<span class="badge ${badgeClass}">${modeLabel}</span> ${switchHtml}`;
+                let unitStr = r.unitsDelta>0 ? `+${r.unitsDelta.toFixed(2)}` : (r.unitsDelta<0 ? r.unitsDelta.toFixed(2) : "0");
+                row.insertCell(6).innerText = unitStr;
+                row.insertCell(7).innerText = formatNumber(r.cashAfter);
+                row.insertCell(8).innerText = formatNumber(r.portAfter);
+                row.insertCell(9).innerText = formatNumber(r.totalAfter);
+                let profitCell = row.insertCell(10);
+                profitCell.innerHTML = `<span class="${r.profitPercent>=0?'profit-positive':'profit-negative'}">${r.profitPercent>=0?'+':''}${r.profitPercent.toFixed(2)}%</span>`;
+            }
+        }
+
+        function defaultExample() {
+            assetNameInput.value = "AAPL"; initialCashInput.value = "120000"; normalInvInput.value = "10000";
+            targetPathText.value = "10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000";
+            priceSeriesTextarea.value = "102,98,105,112,108,115,122,118,126,132,128,135";
+            autoStart.value = "10000"; autoStep.value = "10000"; autoMonths.value = "12";
+            updatePriceHint(); runSimulation();
+        }
+
+        genLinear.addEventListener('click', generateLinear);
+        runBtn.addEventListener('click', runSimulation);
+        resetBtn.addEventListener('click', defaultExample);
+        targetPathText.addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey) { e.preventDefault(); runSimulation(); } });
+        updatePriceHint(); defaultExample();
+    })();
+</script>
+</body>
+</html>
