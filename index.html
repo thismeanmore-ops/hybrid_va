@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>🚀 Hybrid VA/DCA · App Store Style</title>
+    <title>🚀 Hybrid VA/DCA · Multi-Stock Tabs</title>
     <style>
         /* ========== Light & Dark Mode Variables ========== */
         :root {
@@ -51,14 +51,15 @@
         body {
             background: var(--bg-primary);
             font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', system-ui, 'Prompt', sans-serif;
-            padding: 20px 16px;
+            padding: 16px;
             min-height: 100vh;
             transition: background 0.3s ease;
         }
 
         .appstore-container {
-            max-width: 1280px;
+            max-width: 1440px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* Navigation Bar */
@@ -66,15 +67,15 @@
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(20px);
             border-radius: 34px;
-            padding: 12px 24px;
-            margin-bottom: 24px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
             box-shadow: var(--shadow-sm);
             border: 0.5px solid var(--border-light);
-            transition: all 0.3s ease;
         }
 
         body.dark .appstore-nav {
@@ -84,23 +85,24 @@
         .brand-area {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .app-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
         .brand-text h1 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: -0.3px;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
@@ -110,16 +112,34 @@
         }
 
         .brand-text p {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
             margin-top: 2px;
         }
 
-        .theme-toggle {
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .icon-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            cursor: pointer;
+            transition: 0.2s;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 6px;
         }
+
+        .icon-btn:active { opacity: 0.7; transform: scale(0.96); }
 
         .toggle-switch {
             width: 52px;
@@ -158,20 +178,80 @@
             left: 24px;
         }
 
-        .reset-btn {
+        /* Tabs */
+        .tabs-container {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
             background: var(--bg-tertiary);
-            border: none;
-            padding: 8px 20px;
+            border-radius: 44px;
+            padding: 6px;
+            border: 0.5px solid var(--border-light);
+        }
+
+        .tab-buttons-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .tab-btn {
+            padding: 8px 18px;
             border-radius: 40px;
             font-size: 14px;
-            font-weight: 500;
-            color: var(--accent-blue);
+            font-weight: 590;
+            background: transparent;
+            border: none;
             cursor: pointer;
+            transition: 0.2s;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-tab-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 30px;
+            background: var(--accent-blue);
+            color: white;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .add-tab-btn:active { transform: scale(0.95); }
+
+        .delete-tab {
+            color: var(--accent-red);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+            opacity: 0.7;
             transition: 0.2s;
         }
 
-        .reset-btn:active { opacity: 0.7; transform: scale(0.96); }
+        .delete-tab:hover { opacity: 1; }
 
+        .tab-content { display: none; }
+        .tab-content.active-tab { display: block; }
+
+        /* Dashboard Grid */
         .dashboard-grid {
             display: flex;
             flex-wrap: wrap;
@@ -183,123 +263,74 @@
             border-radius: 28px;
             box-shadow: var(--shadow-sm);
             border: 0.5px solid var(--border-light);
-            padding: 24px;
-            transition: all 0.2s ease;
+            padding: 20px;
         }
 
         .settings-card { flex: 1.2; min-width: 280px; }
-        .results-card { flex: 2.5; min-width: 360px; }
+        .results-card { flex: 2.5; min-width: 320px; }
 
-        .input-group { margin-bottom: 20px; }
+        .input-group { margin-bottom: 18px; }
         .app-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--accent-blue);
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* ปรับขนาดช่องกรอกราคาสินทรัพย์ (resizeable) */
-        .price-input-area {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .price-textarea {
+        input, textarea {
             width: 100%;
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: var(--bg-tertiary);
             border: 0.5px solid var(--border-light);
             border-radius: 18px;
-            font-size: 16px;
+            font-size: 15px;
             font-family: inherit;
             transition: 0.2s;
             outline: none;
             color: var(--text-primary);
-            resize: vertical;
-            min-height: 80px;
-        }
-        .price-textarea:focus {
-            background: var(--card-bg);
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
-        }
-        .price-hint {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .price-badge {
-            background: var(--bg-tertiary);
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-family: monospace;
-            color: var(--text-primary);
-        }
-        .input-note {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .key-hint {
-            background: var(--bg-tertiary);
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-family: monospace;
-            font-size: 11px;
         }
 
-        input, textarea:not(.price-textarea) {
-            width: 100%;
-            padding: 14px 18px;
-            background: var(--bg-tertiary);
-            border: 0.5px solid var(--border-light);
-            border-radius: 18px;
-            font-size: 16px;
-            font-family: inherit;
-            transition: 0.2s;
-            outline: none;
-            color: var(--text-primary);
-        }
-        input:focus, textarea:not(.price-textarea):focus {
+        input:focus, textarea:focus {
             background: var(--card-bg);
             border-color: var(--accent-blue);
             box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
         }
 
         .helper-box {
             background: var(--bg-tertiary);
             border-radius: 24px;
-            padding: 18px;
-            margin: 20px 0 16px 0;
+            padding: 16px;
+            margin: 18px 0 14px 0;
             border: 0.5px solid var(--border-light);
         }
+
         .helper-title {
             font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 14px;
+            font-size: 14px;
+            margin-bottom: 12px;
             color: var(--accent-blue);
         }
-        .row-flex { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+
+        .row-flex { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
         .row-flex .input-group { flex: 1; margin-bottom: 0; }
 
         .app-btn {
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
             border: none;
-            padding: 14px;
+            padding: 12px;
             border-radius: 44px;
             font-weight: 600;
-            font-size: 17px;
+            font-size: 16px;
             color: white;
             width: 100%;
             cursor: pointer;
@@ -310,102 +341,138 @@
             gap: 8px;
         }
         .app-btn:active { opacity: 0.8; transform: scale(0.98); }
-        .app-btn-secondary { background: linear-gradient(135deg, #FF9F0A, #FF3B30); }
         .app-btn-outline { background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue); }
-        .btn-group { display: flex; gap: 12px; margin-top: 12px; }
-        .btn-group button { flex: 1; }
 
-        /* Stats Grid */
+        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-bottom: 28px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
         @media (max-width: 680px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
 
         .stat-card {
             background: var(--bg-tertiary);
-            border-radius: 24px;
-            padding: 18px 8px;
+            border-radius: 20px;
+            padding: 14px 6px;
             text-align: center;
             border: 0.5px solid var(--border-light);
-            transition: 0.2s;
         }
-        .stat-card:hover { transform: translateY(-2px); }
         .stat-number {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             word-break: break-word;
             color: var(--text-primary);
         }
         .stat-number-gradient { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .stat-number-positive { color: var(--accent-green); }
-        .stat-number-negative { color: var(--accent-red); }
-        .stat-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-label { font-size: 10px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 
         .profit-box {
             display: inline-block;
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 60px;
             font-weight: 620;
-            font-size: 22px;
+            font-size: 18px;
         }
         .profit-green { background: var(--accent-green); color: white; }
         .profit-red { background: var(--accent-red); color: white; }
 
+        /* Table */
         .table-wrapper {
             background: var(--card-bg);
             border-radius: 20px;
             overflow-x: auto;
             border: 0.5px solid var(--border-light);
         }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 550px; }
         th {
             background: var(--bg-tertiary);
-            padding: 14px 8px;
+            padding: 12px 6px;
             font-weight: 600;
             color: var(--accent-blue);
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
         }
-        td { padding: 12px 6px; text-align: center; border-bottom: 0.5px solid var(--border-light); color: var(--text-primary); }
+        td { padding: 10px 4px; text-align: center; border-bottom: 0.5px solid var(--border-light); color: var(--text-primary); }
+        
         .badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 40px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 590;
         }
         .va-badge { background: var(--badge-va); color: var(--accent-blue); }
         .dca-badge { background: var(--badge-dca); color: #FF9F0A; }
         .sell-value { color: var(--accent-red); font-weight: 500; }
         .buy-value { color: var(--accent-green); font-weight: 500; }
-        .skip-badge { background: var(--bg-tertiary); color: var(--text-secondary); padding: 3px 12px; border-radius: 32px; font-size: 12px; }
-        .switch-chip { background: var(--switch-bg); color: var(--accent-yellow); font-size: 11px; padding: 2px 8px; border-radius: 32px; margin-left: 6px; }
+        .skip-badge { background: var(--bg-tertiary); color: var(--text-secondary); padding: 3px 10px; border-radius: 32px; font-size: 11px; }
+        .switch-chip { background: var(--switch-bg); color: var(--accent-yellow); font-size: 10px; padding: 2px 6px; border-radius: 32px; margin-left: 5px; }
         .profit-positive { color: var(--accent-green); font-weight: 600; }
         .profit-negative { color: var(--accent-red); font-weight: 600; }
+
+        .price-hint {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .price-badge {
+            background: var(--bg-tertiary);
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-family: monospace;
+            color: var(--text-primary);
+        }
+        .input-note {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .key-hint {
+            background: var(--bg-tertiary);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 10px;
+        }
 
         .info-note {
             background: var(--bg-tertiary);
             border-radius: 20px;
-            padding: 14px;
-            margin-top: 20px;
-            font-size: 12px;
+            padding: 12px;
+            margin-top: 18px;
+            font-size: 11px;
             color: var(--text-secondary);
             border-left: 4px solid var(--accent-blue);
         }
+
+        .app-footer {
+            margin-top: 28px;
+            padding: 16px 0 10px 0;
+            text-align: center;
+            border-top: 0.5px solid var(--border-light);
+        }
+        .version-text { font-size: 11px; color: var(--text-secondary); }
+        .version-text strong { color: var(--accent-blue); }
+
         .file-input-hidden { display: none; }
 
-        @media (max-width: 760px) {
+        @media (max-width: 860px) {
             body { padding: 12px; }
-            .appstore-nav { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .settings-card, .results-card { min-width: 100%; }
             .brand-text h1 { font-size: 18px; }
-            .stat-number { font-size: 20px; }
-            .profit-box { font-size: 18px; padding: 4px 12px; }
+            .tab-btn { padding: 6px 14px; font-size: 13px; white-space: nowrap; }
+            .action-buttons { width: 100%; justify-content: flex-start; }
         }
     </style>
 </head>
@@ -415,332 +482,549 @@
         <div class="brand-area">
             <div class="app-icon">🚀</div>
             <div class="brand-text">
-                <h1>Hybrid VA/DCA</h1>
-                <p>Smart Value Averaging · Cash Management</p>
+                <h1>Hybrid VA/DCA · Multi-Stock</h1>
+                <p>Smart Value Averaging + Cash Management</p>
             </div>
         </div>
-        <div class="theme-toggle">
-            <button id="resetDefaultBtn" class="reset-btn">⟳ รีเซ็ต</button>
+        <div class="action-buttons">
+            <button id="saveAllBtn" class="icon-btn">💾 Save All</button>
+            <button id="loadAllBtn" class="icon-btn">📂 Load All</button>
             <button id="darkModeToggle" class="toggle-switch"></button>
         </div>
     </div>
 
-    <div class="dashboard-grid">
-        <div class="app-card settings-card">
-            <div class="input-group">
-                <div class="app-label">🏷️ สินทรัพย์</div>
-                <input type="text" id="assetName" value="AAPL">
-            </div>
-            <div class="input-group">
-                <div class="app-label">💰 เงินต้นเริ่มต้น</div>
-                <input type="number" id="initialCash" value="120000" step="5000">
-            </div>
-
-            <div class="helper-box">
-                <div class="helper-title">✨ สร้าง Target แบบเส้นตรง</div>
-                <div class="row-flex">
-                    <div class="input-group"><div class="app-label">เริ่มต้น</div><input type="number" id="autoStart" value="10000"></div>
-                    <div class="input-group"><div class="app-label">เพิ่มทีละ</div><input type="number" id="autoStep" value="10000"></div>
-                    <div class="input-group"><div class="app-label">จำนวนเดือน</div><input type="number" id="autoMonths" value="12"></div>
-                </div>
-                <button id="genLinearBtn" class="app-btn app-btn-outline" style="width:100%;">📈 สร้าง Target</button>
-            </div>
-
-            <div class="input-group">
-                <div class="app-label">📊 Target Value Path</div>
-                <textarea id="targetPath">10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000</textarea>
-            </div>
-            <div class="input-group">
-                <div class="app-label">💵 Normal Investment</div>
-                <input type="number" id="normalInv" value="10000">
-            </div>
-            <div class="input-group">
-                <div class="app-label">📉 ราคาสินทรัพย์รายเดือน</div>
-                <div class="price-input-area">
-                    <textarea id="priceSeries" class="price-textarea" placeholder="102,98,105,112,108,115,122,118,126,132,128,135">102,98,105,112,108,115,122,118,126,132,128,135</textarea>
-                    <div class="input-note">
-                        <span class="key-hint">💡 กด Enter เพื่อเพิ่มข้อมูล</span>
-                        <span class="key-hint">↕️ ลากมุมขวาล่างเพื่อปรับขนาด</span>
-                    </div>
-                    <div class="price-hint" id="priceHint"></div>
-                </div>
-            </div>
-
-            <button id="runSimBtn" class="app-btn">▶ คำนวณ & อัพเดต</button>
-            <div class="btn-group">
-                <button id="saveJsonBtn" class="app-btn app-btn-secondary">💾 Save as</button>
-                <button id="loadJsonBtn" class="app-btn app-btn-outline">📂 Load</button>
-            </div>
-            <input type="file" id="fileLoader" accept=".json" class="file-input-hidden" />
-
-            <div class="info-note">
-                🔄 <strong>Smart Switch</strong><br>
-                &nbsp;• เงินสด ≤ 30% + VA ต้องการลงทุน > 2x<br>
-                &nbsp;• เงินสด ≤ 30% + VA ขาย/Skip<br>
-                ✅ DCA = เงินสด ÷ เดือนที่เหลือ
-            </div>
-        </div>
-
-        <div class="app-card results-card">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-number stat-number-gradient" id="finalMode">—</div><div class="stat-label">โหมดสุดท้าย</div></div>
-                <div class="stat-card"><div class="stat-number stat-number-gradient" id="remainingCashSpan">—</div><div class="stat-label">เงินสดคงเหลือ</div></div>
-                <div class="stat-card"><div class="stat-number stat-number-gradient" id="portfolioValueSpan">—</div><div class="stat-label">มูลค่าพอร์ต</div></div>
-                <div class="stat-card"><div class="stat-number stat-number-gradient" id="totalUnitsSpan">—</div><div class="stat-label">หน่วยลงทุน</div></div>
-                <div class="stat-card"><div class="stat-number stat-number-gradient" id="totalValueSpan">—</div><div class="stat-label">รวมทั้งสิ้น</div></div>
-                <div class="stat-card"><div id="profitPercentSpan" class="profit-box profit-green">0.00%</div><div class="stat-label">กำไร/ขาดทุน</div></div>
-            </div>
-
-            <div class="table-wrapper">
-                <table id="resultTable">
-                    <thead><tr><th>เดือน</th><th>Target</th><th>ก่อนปรับ</th><th>ราคา</th><th>ซื้อ/ขาย</th><th>โหมด</th><th>หน่วยเปลี่ยน</th><th>เงินสดคงเหลือ</th><th>พอร์ตรวม</th><th>รวมทั้งสิ้น</th><th>% กำไร/ขาดทุน</th></tr></thead>
-                    <tbody id="tableBody"><tr><td colspan="11" style="text-align:center; padding:40px;">✨ กดปุ่มคำนวณ</td></tr></tbody>
-                </table>
-            </div>
-        </div>
+    <div class="tabs-container">
+        <div class="tab-buttons-wrapper" id="tabButtons"></div>
+        <div class="add-tab-btn" id="addTabBtn">+</div>
     </div>
+
+    <div id="tabContents"></div>
+
+    <div class="app-footer">
+        <div class="version-text"><strong>เวอร์ชัน 3.3.0</strong> | Multi-Stock · Save/Load All Tabs</div>
+    </div>
+
+    <input type="file" id="fileLoader" accept=".json" class="file-input-hidden" />
 </div>
 
 <script>
     (function(){
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-        });
+        darkModeToggle.addEventListener('click', () => document.body.classList.toggle('dark'));
 
-        // DOM elements
-        const assetNameInput = document.getElementById('assetName');
-        const initialCashInput = document.getElementById('initialCash');
-        const targetPathText = document.getElementById('targetPath');
-        const normalInvInput = document.getElementById('normalInv');
-        const priceSeriesTextarea = document.getElementById('priceSeries');
-        const priceHint = document.getElementById('priceHint');
-        const runBtn = document.getElementById('runSimBtn');
-        const resetBtn = document.getElementById('resetDefaultBtn');
-        const genLinear = document.getElementById('genLinearBtn');
-        const autoStart = document.getElementById('autoStart');
-        const autoStep = document.getElementById('autoStep');
-        const autoMonths = document.getElementById('autoMonths');
-        const saveJsonBtn = document.getElementById('saveJsonBtn');
-        const loadJsonBtn = document.getElementById('loadJsonBtn');
-        const fileLoader = document.getElementById('fileLoader');
-        const tableBody = document.getElementById('tableBody');
-        const finalModeSpan = document.getElementById('finalMode');
-        const remainingCashSpan = document.getElementById('remainingCashSpan');
-        const portfolioValueSpan = document.getElementById('portfolioValueSpan');
-        const totalUnitsSpan = document.getElementById('totalUnitsSpan');
-        const totalValueSpan = document.getElementById('totalValueSpan');
-        const profitPercentSpan = document.getElementById('profitPercentSpan');
-
-        // อัพเดท hint ราคาแบบ实时
-        function updatePriceHint() {
-            let raw = priceSeriesTextarea.value.trim();
-            let prices = raw.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
-            if (prices.length > 0) {
-                let html = '';
-                prices.forEach((p, idx) => {
-                    html += `<span class="price-badge">📆 เดือน ${idx+1}: ${p.toFixed(2)}</span>`;
-                });
-                priceHint.innerHTML = html;
-            } else {
-                priceHint.innerHTML = '<span style="color:#FF3B30;">⚠️ กรุณากรอกราคาสินทรัพย์ (คั่นด้วยคอมม่า)</span>';
-            }
-        }
-
-        // กด Enter ในช่องราคาสินทรัพย์ -> เพิ่ม , และขึ้นบรรทัดใหม่ได้ (แต่เราจะให้ Enter เป็นการเพิ่มข้อมูล/ยืนยัน)
-        // ฟังก์ชัน: ถ้ากด Enter ที่ textarea และไม่ใช่ Shift+Enter ให้เพิ่ม , ต่อท้าย (หรือเริ่มบรรทัดใหม่)
-        priceSeriesTextarea.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                let cursorPos = priceSeriesTextarea.selectionStart;
-                let text = priceSeriesTextarea.value;
-                // ถ้าตำแหน่งสุดท้ายหรือใกล้ ให้เพิ่มคอมม่า
-                if (text.length === 0 || text.endsWith(',')) {
-                    // ใส่ค่าใหม่
-                    priceSeriesTextarea.value = text + ' ';
-                } else {
-                    // ถ้าไม่ลงท้ายด้วยคอมม่า ให้เพิ่มคอมม่าและเว้นวรรค
-                    let lastChar = text[text.length - 1];
-                    if (lastChar !== ',' && lastChar !== ' ') {
-                        priceSeriesTextarea.value = text + ', ';
-                    } else {
-                        priceSeriesTextarea.value = text + ' ';
-                    }
-                }
-                updatePriceHint();
-                // runSimulation(); // optional
-            }
-        });
-
-        priceSeriesTextarea.addEventListener('input', updatePriceHint);
+        let stocks = [];
+        let nextId = 2; // เริ่มที่ 2 เพราะ AAPL คือ id=1
+        let activeTabId = null;
 
         function parseTargetPath(raw) {
-            if (!raw.trim()) return [];
+            if (!raw || !raw.trim()) return [];
             let str = raw.trim();
-            if (str.includes(',')) return str.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v>0);
-            else return str.split(/\r?\n/).map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v>0);
+            if (str.includes(',')) {
+                return str.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v > 0);
+            } else {
+                return str.split(/\r?\n/).map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v > 0);
+            }
         }
 
-        function generateLinear() {
-            let start = parseFloat(autoStart.value)||10000, step = parseFloat(autoStep.value)||10000, months = parseInt(autoMonths.value)||12;
-            let targets = [];
-            for (let i=1;i<=months;i++) targets.push(start + (i-1)*step);
-            targetPathText.value = targets.join(',');
-            runSimulation();
+        function formatNumber(num) {
+            return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        function getCurrentConfig() {
-            return {
-                assetName: assetNameInput.value, initialCash: initialCashInput.value, targetPath: targetPathText.value,
-                normalInv: normalInvInput.value, priceSeries: priceSeriesTextarea.value,
-                autoStart: autoStart.value, autoStep: autoStep.value, autoMonths: autoMonths.value, savedAt: new Date().toISOString()
-            };
-        }
-        function loadConfigToUI(cfg) {
-            if(cfg.assetName) assetNameInput.value = cfg.assetName;
-            if(cfg.initialCash) initialCashInput.value = cfg.initialCash;
-            if(cfg.targetPath) targetPathText.value = cfg.targetPath;
-            if(cfg.normalInv) normalInvInput.value = cfg.normalInv;
-            if(cfg.priceSeries) priceSeriesTextarea.value = cfg.priceSeries;
-            if(cfg.autoStart) autoStart.value = cfg.autoStart;
-            if(cfg.autoStep) autoStep.value = cfg.autoStep;
-            if(cfg.autoMonths) autoMonths.value = cfg.autoMonths;
-            updatePriceHint(); runSimulation();
-        }
-        function saveAsJson() {
-            const asset = assetNameInput.value.trim() || "portfolio";
-            const now = new Date();
-            const filename = `${asset}_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}${String(now.getSeconds()).padStart(2,'0')}.json`;
-            const blob = new Blob([JSON.stringify(getCurrentConfig(), null, 2)], {type:'application/json'});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href);
-        }
-        function loadFromFile(file) {
-            const reader = new FileReader();
-            reader.onload = e => { try { loadConfigToUI(JSON.parse(e.target.result)); alert("✅ โหลดสำเร็จ"); } catch(err) { alert("ไฟล์ไม่ถูกต้อง"); } };
-            reader.readAsText(file);
-        }
-        fileLoader.addEventListener('change', e => { if(fileLoader.files.length) loadFromFile(fileLoader.files[0]); fileLoader.value=''; });
-        loadJsonBtn.addEventListener('click', () => fileLoader.click());
-        saveJsonBtn.addEventListener('click', saveAsJson);
-
-        function formatNumber(num) { return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
-
-        function runSimulation() {
-            try {
-                let initialCash = parseFloat(initialCashInput.value) || 120000;
-                let normalInv = parseFloat(normalInvInput.value) || 10000;
-                let targets = parseTargetPath(targetPathText.value);
-                let pricesRaw = priceSeriesTextarea.value.trim().split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v) && v>0);
-                let totalMonths = Math.min(targets.length, pricesRaw.length);
-                if(totalMonths===0) { alert("กรุณาใส่ Target และราคาสินทรัพย์"); return; }
-                targets = targets.slice(0,totalMonths);
-                let prices = pricesRaw.slice(0,totalMonths);
-                updatePriceHint();
-
-                let cash = initialCash, units = 0, mode = "VA", switched = false, reason = "";
-                let records = [];
-                for(let t=0; t<totalMonths; t++) {
-                    let target = targets[t], price = prices[t];
-                    let currentValue = units * price;
-                    let rawDiff = target - currentValue;
-
-                    if(!switched && mode==="VA") {
-                        let cashLow = cash <= initialCash * 0.3;
-                        let needOver2x = rawDiff > normalInv*2;
-                        let isSkipSell = rawDiff <= 0;
-                        if((cashLow && needOver2x) || (cashLow && isSkipSell)) {
-                            mode = "DCA"; switched = true;
-                            reason = (cashLow && needOver2x) ? "เงิน≤30% + ต้องการลงทุน>2x" : "เงิน≤30% + ขาย/Skip";
-                        }
-                    }
-                    let investAmount = 0, unitsDelta = 0, newCash = cash, newUnits = units;
-                    if(mode === "VA") {
-                        if(rawDiff > 0) {
-                            let maxBuy = normalInv * 2;
-                            let want = Math.min(rawDiff, maxBuy);
-                            investAmount = Math.min(want, cash);
-                            if(investAmount>0 && price>0) { let buyU = investAmount/price; newUnits = units+buyU; newCash = cash - investAmount; unitsDelta = buyU; }
-                        } else if(rawDiff < 0) {
-                            let needSell = Math.abs(rawDiff);
-                            let equity = units*price;
-                            let sellVal = Math.min(needSell, equity);
-                            if(sellVal>0 && price>0 && units>0) {
-                                let sellU = Math.min(sellVal/price, units);
-                                let realSell = sellU*price;
-                                newUnits = units - sellU; newCash = cash + realSell; unitsDelta = -sellU; investAmount = -realSell;
-                            }
-                        }
-                    } else {
-                        let left = totalMonths - t;
-                        if(left>0 && cash>0) {
-                            let dcaAmt = cash / left;
-                            investAmount = Math.min(dcaAmt, cash);
-                            if(investAmount>0 && price>0) { let buyU = investAmount/price; newUnits = units+buyU; newCash = cash - investAmount; unitsDelta = buyU; }
-                        }
-                    }
-                    let portAfter = newUnits * price;
-                    let totalAfter = newCash + portAfter;
-                    let profitPercent = ((totalAfter - initialCash)/initialCash)*100;
-                    let isSwitchMonth = (switched && t>0 && records.length>0 && records[records.length-1].mode==="VA" && mode==="DCA") || (switched && t===0 && mode==="DCA");
-                    records.push({month:t+1, target, currentValue, price, investAmount, mode, unitsDelta, cashAfter:newCash, portAfter, unitsAfter:newUnits, totalAfter, profitPercent, isSwitchMonth, switchReason: isSwitchMonth?reason:""});
-                    cash = newCash; units = newUnits;
-                }
-                if(records.length) {
-                    let last = records[records.length-1];
-                    finalModeSpan.innerText = last.mode==="VA"?"VA":"DCA";
-                    remainingCashSpan.innerText = formatNumber(last.cashAfter);
-                    portfolioValueSpan.innerText = formatNumber(last.portAfter);
-                    totalUnitsSpan.innerText = last.unitsAfter.toFixed(2);
-                    totalValueSpan.innerText = formatNumber(last.totalAfter);
-                    let isProfit = last.profitPercent >= 0;
-                    profitPercentSpan.className = `profit-box ${isProfit ? 'profit-green' : 'profit-red'}`;
-                    profitPercentSpan.innerHTML = `${isProfit ? '+' : ''}${last.profitPercent.toFixed(2)}%`;
-                    renderTable(records);
-                }
-            } catch(e) { alert("Error: "+e.message); }
-        }
-
-        function renderTable(records) {
-            tableBody.innerHTML = "";
-            for(let r of records) {
-                let row = tableBody.insertRow();
+        function renderTable(tbody, records) {
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            for (let r of records) {
+                let row = tbody.insertRow();
                 row.insertCell(0).innerText = r.month;
                 row.insertCell(1).innerText = r.target.toFixed(2);
                 row.insertCell(2).innerText = r.currentValue.toFixed(2);
                 row.insertCell(3).innerText = r.price.toFixed(2);
+                
                 let invCell = row.insertCell(4);
-                if(r.investAmount===0) invCell.innerHTML = `<span class="skip-badge">Skip</span>`;
-                else if(r.investAmount>0) invCell.innerHTML = `<span class="buy-value">+${r.investAmount.toFixed(2)}</span>`;
-                else invCell.innerHTML = `<span class="sell-value">${r.investAmount.toFixed(2)}</span>`;
+                if (r.investAmount === 0) invCell.innerHTML = '<span class="skip-badge">Skip</span>';
+                else if (r.investAmount > 0) invCell.innerHTML = '<span class="buy-value">+' + r.investAmount.toFixed(2) + '</span>';
+                else invCell.innerHTML = '<span class="sell-value">' + r.investAmount.toFixed(2) + '</span>';
+                
                 let modeCell = row.insertCell(5);
-                let modeLabel = r.mode==="VA"?"VA":"DCA";
-                let badgeClass = r.mode==="VA"?"va-badge":"dca-badge";
-                let switchHtml = r.isSwitchMonth ? `<span class="switch-chip">⚡สลับ</span>` : "";
-                modeCell.innerHTML = `<span class="badge ${badgeClass}">${modeLabel}</span> ${switchHtml}`;
-                let unitStr = r.unitsDelta>0 ? `+${r.unitsDelta.toFixed(2)}` : (r.unitsDelta<0 ? r.unitsDelta.toFixed(2) : "0");
+                let modeLabel = r.mode === "VA" ? "VA" : "DCA";
+                let badgeClass = r.mode === "VA" ? "va-badge" : "dca-badge";
+                let switchHtml = r.isSwitchMonth ? '<span class="switch-chip">⚡สลับ</span>' : "";
+                modeCell.innerHTML = '<span class="badge ' + badgeClass + '">' + modeLabel + '</span> ' + switchHtml;
+                
+                let unitStr = r.unitsDelta > 0 ? '+' + r.unitsDelta.toFixed(2) : (r.unitsDelta < 0 ? r.unitsDelta.toFixed(2) : "0");
                 row.insertCell(6).innerText = unitStr;
                 row.insertCell(7).innerText = formatNumber(r.cashAfter);
                 row.insertCell(8).innerText = formatNumber(r.portAfter);
                 row.insertCell(9).innerText = formatNumber(r.totalAfter);
+                
                 let profitCell = row.insertCell(10);
-                profitCell.innerHTML = `<span class="${r.profitPercent>=0?'profit-positive':'profit-negative'}">${r.profitPercent>=0?'+':''}${r.profitPercent.toFixed(2)}%</span>`;
+                let profitClass = r.profitPercent >= 0 ? "profit-positive" : "profit-negative";
+                profitCell.innerHTML = '<span class="' + profitClass + '">' + (r.profitPercent >= 0 ? '+' : '') + r.profitPercent.toFixed(2) + '%</span>';
             }
         }
 
-        function defaultExample() {
-            assetNameInput.value = "AAPL"; initialCashInput.value = "120000"; normalInvInput.value = "10000";
-            targetPathText.value = "10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000";
-            priceSeriesTextarea.value = "102,98,105,112,108,115,122,118,126,132,128,135";
-            autoStart.value = "10000"; autoStep.value = "10000"; autoMonths.value = "12";
-            updatePriceHint(); runSimulation();
+        function runSimulationForStock(stock) {
+            try {
+                let initialCash = parseFloat(stock.initialCashInput.value) || 120000;
+                let normalInv = parseFloat(stock.normalInvInput.value) || 10000;
+                let targets = parseTargetPath(stock.targetPathText.value);
+                let pricesRaw = stock.priceSeriesInput.value.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v) && v > 0);
+                let totalMonths = Math.min(targets.length, pricesRaw.length);
+                
+                if (totalMonths === 0) {
+                    if (stock.tableBody) stock.tableBody.innerHTML = '<td><td colspan="11" style="padding:40px;">⚠️ กรุณาใส่ Target และราคาสินทรัพย์</td></tr>';
+                    return;
+                }
+                
+                targets = targets.slice(0, totalMonths);
+                let prices = pricesRaw.slice(0, totalMonths);
+
+                let cash = initialCash, units = 0, mode = "VA", switched = false;
+                let records = [];
+                
+                for (let t = 0; t < totalMonths; t++) {
+                    let target = targets[t], price = prices[t];
+                    let currentValue = units * price;
+                    let rawDiff = target - currentValue;
+
+                    if (!switched && mode === "VA") {
+                        let cashLow = cash <= initialCash * 0.3;
+                        let needOver2x = rawDiff > normalInv * 2;
+                        let isSkipSell = rawDiff <= 0;
+                        if ((cashLow && needOver2x) || (cashLow && isSkipSell)) {
+                            mode = "DCA";
+                            switched = true;
+                        }
+                    }
+                    
+                    let investAmount = 0, unitsDelta = 0, newCash = cash, newUnits = units;
+                    
+                    if (mode === "VA") {
+                        if (rawDiff > 0) {
+                            let maxBuy = normalInv * 2;
+                            let want = Math.min(rawDiff, maxBuy);
+                            investAmount = Math.min(want, cash);
+                            if (investAmount > 0 && price > 0) {
+                                let buyU = investAmount / price;
+                                newUnits = units + buyU;
+                                newCash = cash - investAmount;
+                                unitsDelta = buyU;
+                            }
+                        } else if (rawDiff < 0) {
+                            let needSell = Math.abs(rawDiff);
+                            let equity = units * price;
+                            let sellVal = Math.min(needSell, equity);
+                            if (sellVal > 0 && price > 0 && units > 0) {
+                                let sellU = Math.min(sellVal / price, units);
+                                let realSell = sellU * price;
+                                newUnits = units - sellU;
+                                newCash = cash + realSell;
+                                unitsDelta = -sellU;
+                                investAmount = -realSell;
+                            }
+                        }
+                    } else {
+                        let left = totalMonths - t;
+                        if (left > 0 && cash > 0) {
+                            let dcaAmt = cash / left;
+                            investAmount = Math.min(dcaAmt, cash);
+                            if (investAmount > 0 && price > 0) {
+                                let buyU = investAmount / price;
+                                newUnits = units + buyU;
+                                newCash = cash - investAmount;
+                                unitsDelta = buyU;
+                            }
+                        }
+                    }
+                    
+                    let portAfter = newUnits * price;
+                    let totalAfter = newCash + portAfter;
+                    let profitPercent = ((totalAfter - initialCash) / initialCash) * 100;
+                    let isSwitchMonth = (switched && t > 0 && records.length > 0 && records[records.length - 1].mode === "VA" && mode === "DCA") || (switched && t === 0 && mode === "DCA");
+                    
+                    records.push({
+                        month: t + 1, target, currentValue, price, investAmount, mode,
+                        unitsDelta, cashAfter: newCash, portAfter, unitsAfter: newUnits,
+                        totalAfter, profitPercent, isSwitchMonth
+                    });
+                    cash = newCash;
+                    units = newUnits;
+                }
+                
+                if (records.length > 0) {
+                    let last = records[records.length - 1];
+                    if (stock.finalModeSpan) stock.finalModeSpan.innerText = last.mode === "VA" ? "VA" : "DCA";
+                    if (stock.remainingCashSpan) stock.remainingCashSpan.innerText = formatNumber(last.cashAfter);
+                    if (stock.portfolioValueSpan) stock.portfolioValueSpan.innerText = formatNumber(last.portAfter);
+                    if (stock.totalUnitsSpan) stock.totalUnitsSpan.innerText = last.unitsAfter.toFixed(2);
+                    if (stock.totalValueSpan) stock.totalValueSpan.innerText = formatNumber(last.totalAfter);
+                    
+                    let isProfit = last.profitPercent >= 0;
+                    if (stock.profitPercentSpan) {
+                        stock.profitPercentSpan.className = 'profit-box ' + (isProfit ? 'profit-green' : 'profit-red');
+                        stock.profitPercentSpan.innerHTML = (isProfit ? '+' : '') + last.profitPercent.toFixed(2) + '%';
+                    }
+                    if (stock.tableBody) renderTable(stock.tableBody, records);
+                }
+            } catch(e) {
+                console.error(e);
+                if (stock.tableBody) stock.tableBody.innerHTML = '<tr><td colspan="11">Error: ' + e.message + '</td></tr>';
+            }
         }
 
-        genLinear.addEventListener('click', generateLinear);
-        runBtn.addEventListener('click', runSimulation);
-        resetBtn.addEventListener('click', defaultExample);
-        targetPathText.addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey) { e.preventDefault(); runSimulation(); } });
-        updatePriceHint(); defaultExample();
+        function updatePriceHint(stock) {
+            if (!stock.priceSeriesInput || !stock.priceHint) return;
+            let raw = stock.priceSeriesInput.value.trim();
+            let prices = raw.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
+            if (prices.length > 0) {
+                let html = '';
+                for (let i = 0; i < prices.length; i++) {
+                    html += '<span class="price-badge">📆 เดือน ' + (i + 1) + ': ' + prices[i].toFixed(2) + '</span>';
+                }
+                stock.priceHint.innerHTML = html;
+            } else {
+                stock.priceHint.innerHTML = '<span style="color:#FF3B30;">⚠️ กรุณากรอกราคาสินทรัพย์</span>';
+            }
+        }
+
+        // Save all stocks to JSON file
+        function saveAllStocks() {
+            const allData = [];
+            for (let stock of stocks) {
+                allData.push({
+                    id: stock.id,
+                    name: stock.name,
+                    assetName: stock.stockObj.assetNameInput.value,
+                    initialCash: stock.stockObj.initialCashInput.value,
+                    targetPath: stock.stockObj.targetPathText.value,
+                    normalInv: stock.stockObj.normalInvInput.value,
+                    priceSeries: stock.stockObj.priceSeriesInput.value,
+                    autoStart: stock.stockObj.autoStart?.value || '10000',
+                    autoStep: stock.stockObj.autoStep?.value || '10000',
+                    autoMonths: stock.stockObj.autoMonths?.value || '12'
+                });
+            }
+            
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const now = new Date();
+            const filename = `hybrid_vadca_backup_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.json`;
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('✅ บันทึกข้อมูลทั้งหมดเรียบร้อยแล้ว (' + stocks.length + ' หุ้น)');
+        }
+
+        // Load all stocks from JSON file
+        function loadAllStocks(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const allData = JSON.parse(e.target.result);
+                    if (!Array.isArray(allData) || allData.length === 0) {
+                        alert('ไฟล์ไม่ถูกต้อง หรือไม่มีข้อมูล');
+                        return;
+                    }
+                    
+                    // Clear existing tabs (except first)
+                    while (stocks.length > 1) {
+                        const lastStock = stocks[stocks.length - 1];
+                        lastStock.tabBtn.remove();
+                        lastStock.contentDiv.remove();
+                        stocks.pop();
+                    }
+                    
+                    // Update first stock (AAPL)
+                    const firstData = allData[0];
+                    const firstStock = stocks[0];
+                    firstStock.stockObj.assetNameInput.value = firstData.assetName || firstData.name || 'AAPL';
+                    firstStock.stockObj.initialCashInput.value = firstData.initialCash || '120000';
+                    firstStock.stockObj.targetPathText.value = firstData.targetPath || '10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000';
+                    firstStock.stockObj.normalInvInput.value = firstData.normalInv || '10000';
+                    firstStock.stockObj.priceSeriesInput.value = firstData.priceSeries || '102,98,105,112,108,115,122,118,126,132,128,135';
+                    if (firstStock.stockObj.autoStart) firstStock.stockObj.autoStart.value = firstData.autoStart || '10000';
+                    if (firstStock.stockObj.autoStep) firstStock.stockObj.autoStep.value = firstData.autoStep || '10000';
+                    if (firstStock.stockObj.autoMonths) firstStock.stockObj.autoMonths.value = firstData.autoMonths || '12';
+                    
+                    // Update tab name
+                    const newName = firstStock.stockObj.assetNameInput.value.trim();
+                    const displayName = newName.length > 18 ? newName.slice(0, 16) + '..' : newName;
+                    firstStock.tabBtn.innerHTML = displayName;
+                    firstStock.name = newName;
+                    
+                    updatePriceHint(firstStock.stockObj);
+                    runSimulationForStock(firstStock.stockObj);
+                    
+                    // Add remaining stocks
+                    for (let i = 1; i < allData.length; i++) {
+                        const data = allData[i];
+                        addStockFromData(data);
+                    }
+                    
+                    alert('✅ โหลดข้อมูลสำเร็จ (' + allData.length + ' หุ้น)');
+                } catch(err) {
+                    alert('ไฟล์ไม่ถูกต้อง: ' + err.message);
+                }
+            };
+            reader.onerror = () => alert('ไม่สามารถอ่านไฟล์ได้');
+            reader.readAsText(file);
+        }
+
+        function addStockFromData(data) {
+            const id = nextId++;
+            const defaultName = data.assetName || data.name || 'หุ้น ' + id;
+            const isFirst = false;
+            
+            const { tabBtn, contentDiv, stockObj } = createStock(id, defaultName, isFirst, data);
+            stocks.push({ id, name: defaultName, tabBtn, contentDiv, stockObj });
+            
+            tabBtn.addEventListener('click', () => setActiveTab(id));
+            const deleteSpan = tabBtn.querySelector('.delete-tab');
+            if (deleteSpan) {
+                deleteSpan.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeStock(id);
+                });
+            }
+            setActiveTab(id);
+        }
+
+        function createStock(id, defaultName, isFirst = false, loadData = null) {
+            const stockId = id;
+            
+            // Create tab button
+            const tabBtn = document.createElement('button');
+            tabBtn.className = 'tab-btn';
+            if (isFirst) {
+                tabBtn.innerHTML = defaultName;
+            } else {
+                tabBtn.innerHTML = defaultName + ' <span class="delete-tab" data-id="' + stockId + '">×</span>';
+            }
+            document.getElementById('tabButtons').appendChild(tabBtn);
+            
+            // Create content div
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'tab-content';
+            contentDiv.id = 'tabContent-' + stockId;
+            contentDiv.innerHTML = `
+                <div class="dashboard-grid">
+                    <div class="app-card settings-card">
+                        <div class="input-group"><div class="app-label">🏷️ ชื่อสินทรัพย์</div><input type="text" class="asset-name" value="${defaultName}"></div>
+                        <div class="input-group"><div class="app-label">💰 เงินต้นเริ่มต้น</div><input type="number" class="initial-cash" value="120000" step="5000"></div>
+                        <div class="helper-box"><div class="helper-title">✨ สร้าง Target แบบเส้นตรง</div>
+                            <div class="row-flex"><div class="input-group"><div class="app-label">เริ่มต้น</div><input type="number" class="auto-start" value="10000"></div>
+                            <div class="input-group"><div class="app-label">เพิ่มทีละ</div><input type="number" class="auto-step" value="10000"></div>
+                            <div class="input-group"><div class="app-label">จำนวนเดือน</div><input type="number" class="auto-months" value="12"></div></div>
+                            <button class="gen-linear-btn app-btn app-btn-outline" style="width:100%;">📈 สร้าง Target</button></div>
+                        <div class="input-group"><div class="app-label">📊 Target Value Path</div><textarea class="target-path" rows="3">10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000</textarea></div>
+                        <div class="input-group"><div class="app-label">💵 Normal Investment</div><input type="number" class="normal-inv" value="10000"></div>
+                        <div class="input-group"><div class="app-label">📉 ราคาสินทรัพย์รายเดือน</div>
+                            <div class="price-input-area"><textarea class="price-series" rows="2">102,98,105,112,108,115,122,118,126,132,128,135</textarea>
+                            <div class="input-note"><span class="key-hint">💡 กด Enter เพื่อเพิ่มข้อมูล</span><span class="key-hint">↕️ ลากมุมขวาล่างเพื่อปรับขนาด</span></div>
+                            <div class="price-hint"></div></div></div>
+                        <button class="run-sim-btn app-btn">▶ คำนวณ & อัพเดต</button>
+                        <div class="info-note">🔄 Smart Switch<br>&nbsp;• เงินสด ≤ 30% + VA ต้องการลงทุน > 2x<br>&nbsp;• เงินสด ≤ 30% + VA ขาย/Skip<br>✅ DCA = เงินสด ÷ เดือนที่เหลือ</div>
+                    </div>
+                    <div class="app-card results-card">
+                        <div class="stats-grid">
+                            <div class="stat-card"><div class="stat-number stat-number-gradient final-mode">—</div><div class="stat-label">โหมดสุดท้าย</div></div>
+                            <div class="stat-card"><div class="stat-number stat-number-gradient remaining-cash">—</div><div class="stat-label">เงินสดคงเหลือ</div></div>
+                            <div class="stat-card"><div class="stat-number stat-number-gradient portfolio-value">—</div><div class="stat-label">มูลค่าพอร์ต</div></div>
+                            <div class="stat-card"><div class="stat-number stat-number-gradient total-units">—</div><div class="stat-label">หน่วยลงทุน</div></div>
+                            <div class="stat-card"><div class="stat-number stat-number-gradient total-value">—</div><div class="stat-label">รวมทั้งสิ้น</div></div>
+                            <div class="stat-card"><div class="profit-box profit-green profit-percent">0.00%</div><div class="stat-label">กำไร/ขาดทุน</div></div>
+                        </div>
+                        <div class="table-wrapper"><table><thead><tr><th>เดือน</th><th>Target</th><th>ก่อนปรับ</th><th>ราคา</th><th>ซื้อ/ขาย</th><th>โหมด</th><th>หน่วยเปลี่ยน</th><th>เงินสดคงเหลือ</th><th>พอร์ตรวม</th><th>รวมทั้งสิ้น</th><th>% กำไร/ขาดทุน</th></tr></thead><tbody class="table-body"></tbody></table></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('tabContents').appendChild(contentDiv);
+            
+            // Get elements
+            const assetNameInput = contentDiv.querySelector('.asset-name');
+            const initialCashInput = contentDiv.querySelector('.initial-cash');
+            const targetPathText = contentDiv.querySelector('.target-path');
+            const normalInvInput = contentDiv.querySelector('.normal-inv');
+            const priceSeriesInput = contentDiv.querySelector('.price-series');
+            const priceHintDiv = contentDiv.querySelector('.price-hint');
+            const runBtn = contentDiv.querySelector('.run-sim-btn');
+            const genLinearBtn = contentDiv.querySelector('.gen-linear-btn');
+            const autoStart = contentDiv.querySelector('.auto-start');
+            const autoStep = contentDiv.querySelector('.auto-step');
+            const autoMonths = contentDiv.querySelector('.auto-months');
+            const tableBody = contentDiv.querySelector('.table-body');
+            const finalModeSpan = contentDiv.querySelector('.final-mode');
+            const remainingCashSpan = contentDiv.querySelector('.remaining-cash');
+            const portfolioValueSpan = contentDiv.querySelector('.portfolio-value');
+            const totalUnitsSpan = contentDiv.querySelector('.total-units');
+            const totalValueSpan = contentDiv.querySelector('.total-value');
+            const profitPercentSpan = contentDiv.querySelector('.profit-percent');
+            
+            const stockObj = {
+                id: stockId, tabBtn, assetNameInput, initialCashInput, targetPathText, normalInvInput,
+                priceSeriesInput, priceHint: priceHintDiv, tableBody, finalModeSpan, remainingCashSpan,
+                portfolioValueSpan, totalUnitsSpan, totalValueSpan, profitPercentSpan, name: defaultName,
+                autoStart, autoStep, autoMonths
+            };
+            
+            // Load data if provided
+            if (loadData) {
+                assetNameInput.value = loadData.assetName || loadData.name || defaultName;
+                initialCashInput.value = loadData.initialCash || '120000';
+                targetPathText.value = loadData.targetPath || '10000,21000,33000,46000,60000,75000,91000,108000,126000,145000,165000,186000';
+                normalInvInput.value = loadData.normalInv || '10000';
+                priceSeriesInput.value = loadData.priceSeries || '102,98,105,112,108,115,122,118,126,132,128,135';
+                if (autoStart) autoStart.value = loadData.autoStart || '10000';
+                if (autoStep) autoStep.value = loadData.autoStep || '10000';
+                if (autoMonths) autoMonths.value = loadData.autoMonths || '12';
+            }
+            
+            // Update tab name on input
+            const updateTabNameHandler = () => {
+                const newName = assetNameInput.value.trim();
+                const displayName = newName.length > 18 ? newName.slice(0, 16) + '..' : newName;
+                if (isFirst) {
+                    tabBtn.innerHTML = displayName;
+                } else {
+                    tabBtn.innerHTML = displayName + ' <span class="delete-tab" data-id="' + stockId + '">×</span>';
+                    const newDeleteSpan = tabBtn.querySelector('.delete-tab');
+                    if (newDeleteSpan) {
+                        newDeleteSpan.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            removeStock(stockId);
+                        });
+                    }
+                }
+                stockObj.name = newName;
+            };
+            assetNameInput.addEventListener('input', updateTabNameHandler);
+            
+            // Price hint update
+            const updateHint = () => {
+                let raw = priceSeriesInput.value.trim();
+                let prices = raw.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
+                if (prices.length) {
+                    let html = '';
+                    for (let i = 0; i < prices.length; i++) {
+                        html += '<span class="price-badge">📆 เดือน ' + (i + 1) + ': ' + prices[i].toFixed(2) + '</span>';
+                    }
+                    priceHintDiv.innerHTML = html;
+                } else {
+                    priceHintDiv.innerHTML = '<span style="color:#FF3B30;">⚠️ กรุณากรอกราคา</span>';
+                }
+            };
+            priceSeriesInput.addEventListener('input', updateHint);
+            priceSeriesInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    let text = priceSeriesInput.value;
+                    priceSeriesInput.value = text.endsWith(',') ? text + ' ' : (text.length ? text + ', ' : '');
+                    updateHint();
+                }
+            });
+            
+            const runSim = () => runSimulationForStock(stockObj);
+            
+            const generateLinear = () => {
+                let start = parseFloat(autoStart?.value) || 10000;
+                let step = parseFloat(autoStep?.value) || 10000;
+                let months = parseInt(autoMonths?.value) || 12;
+                let targets = [];
+                for (let i = 1; i <= months; i++) targets.push(start + (i - 1) * step);
+                targetPathText.value = targets.join(',');
+                runSim();
+            };
+            
+            runBtn.addEventListener('click', runSim);
+            if (genLinearBtn) genLinearBtn.addEventListener('click', generateLinear);
+            targetPathText.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    runSim();
+                }
+            });
+            
+            updateHint();
+            runSim();
+            
+            return { tabBtn, contentDiv, stockObj };
+        }
+        
+        function addStock() {
+            const id = nextId++;
+            const defaultName = 'หุ้น ' + id;
+            const { tabBtn, contentDiv, stockObj } = createStock(id, defaultName, false);
+            
+            stocks.push({ id, name: defaultName, tabBtn, contentDiv, stockObj });
+            
+            tabBtn.addEventListener('click', () => setActiveTab(id));
+            const deleteSpan = tabBtn.querySelector('.delete-tab');
+            if (deleteSpan) {
+                deleteSpan.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeStock(id);
+                });
+            }
+            setActiveTab(id);
+        }
+        
+        function removeStock(id) {
+            if (stocks.length <= 1) return;
+            const index = stocks.findIndex(s => s.id === id);
+            if (index === -1) return;
+            const stock = stocks[index];
+            if (stock.tabBtn) stock.tabBtn.remove();
+            if (stock.contentDiv) stock.contentDiv.remove();
+            stocks.splice(index, 1);
+            if (activeTabId === id && stocks.length > 0) setActiveTab(stocks[0].id);
+        }
+        
+        function setActiveTab(id) {
+            activeTabId = id;
+            for (let i = 0; i < stocks.length; i++) {
+                const stock = stocks[i];
+                if (stock.id === id) {
+                    if (stock.tabBtn) stock.tabBtn.classList.add('active');
+                    if (stock.contentDiv) stock.contentDiv.classList.add('active-tab');
+                } else {
+                    if (stock.tabBtn) stock.tabBtn.classList.remove('active');
+                    if (stock.contentDiv) stock.contentDiv.classList.remove('active-tab');
+                }
+            }
+        }
+        
+        // Save/Load handlers
+        const saveAllBtn = document.getElementById('saveAllBtn');
+        const loadAllBtn = document.getElementById('loadAllBtn');
+        const fileLoader = document.getElementById('fileLoader');
+        
+        saveAllBtn.addEventListener('click', saveAllStocks);
+        loadAllBtn.addEventListener('click', () => fileLoader.click());
+        fileLoader.addEventListener('change', (e) => {
+            if (fileLoader.files.length > 0) {
+                loadAllStocks(fileLoader.files[0]);
+                fileLoader.value = '';
+            }
+        });
+        
+        function init() {
+            const id = 1;
+            const { tabBtn, contentDiv, stockObj } = createStock(id, "AAPL", true);
+            stocks.push({ id: 1, name: "AAPL", tabBtn, contentDiv, stockObj });
+            tabBtn.addEventListener('click', () => setActiveTab(1));
+            setActiveTab(1);
+            nextId = 2;
+            
+            document.getElementById('addTabBtn').addEventListener('click', addStock);
+        }
+        
+        init();
     })();
 </script>
 </body>
